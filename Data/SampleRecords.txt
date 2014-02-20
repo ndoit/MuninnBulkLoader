@@ -1,0 +1,38 @@
+#TERM
+{
+
+    "Term": {
+        "Name": "Yoo",
+        "Definition": "Who?",
+        "PossibleValues": "Zero or one, or any combination thereof.",
+        "Notes": "An example term.",
+        "DataSensitivity": "None",
+        "DataAvailability": "Always"
+    },
+    "Stakeholders": [
+        {
+            "Name": "Office of Yodeling",
+            "Stake": "Consult"
+        },
+        {
+            "Name": "OIT",
+            "Stake": "Responsible"
+        }
+    ],
+    "Reports": [
+        {
+            "Name": "Colbert"
+        }
+    ]
+
+}
+#END
+#OFFICE
+{
+
+    "Office": {
+        "Name": "Office of Yodeling"
+    }
+}
+#END
+	
