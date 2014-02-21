@@ -8,8 +8,11 @@ require 'yaml'
 def add_to_muninn node_type, json_object
     config = YAML.load_file("config.yml")
 
-  	uri_string = "/#{node_type}/"
+    node_type_plural = node_type.pluralize
+  	uri_string = "/#{node_type_plural}/"
     http = Net::HTTP.new(config["muninn_host"], config["muninn_port"])
+    http.use_ssl = config["muninn_uses_ssl"]
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE #Muninn is using a self-signed cert
 
     request = Net::HTTP::Post.new("#{uri_string}", initheader = {'Content-Type' =>'application/json'})
     request.body = json_object
@@ -32,8 +35,8 @@ def extract_file(file_name)
         current_string = nil
       elsif line[0] == "#"
         current_string = ""
-        current_type = line[1,line.length-1].downcase.pluralize
-        puts "*** Adding to: " + current_type
+        current_type = line[1,line.length-1].downcase
+        puts "*** Adding: " + current_type
       else
         if current_type == nil
           puts "*** Missing #TYPE declaration at beginning of object."
@@ -79,7 +82,7 @@ def load_objects json_objects
   end
   if error_objects.length > 0
     error_objects.each do |error_object|
-      puts "*** Error loading to " + error_object[:type] + ": " + error_object[:message] +
+      puts "*** Error loading " + error_object[:type] + ": " + error_object[:message] +
       "\nCaused by:\n\n" +
       error_object[:json] +
       "\n\n"
